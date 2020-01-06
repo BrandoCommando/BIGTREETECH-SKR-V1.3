@@ -319,13 +319,17 @@ int8_t Stepper::count_direction[NUM_AXIS] = { 0, 0, 0, 0 };
     #define Z_APPLY_STEP(v,Q) do{ Z_STEP_WRITE(v); Z2_STEP_WRITE(v); Z3_STEP_WRITE(v); }while(0)
   #endif
 #elif ENABLED(Z_DUAL_STEPPER_DRIVERS)
-  #define Z_APPLY_DIR(v,Q) do{ Z_DIR_WRITE(v); Z2_DIR_WRITE(v); }while(0)
+  #define Z_APPLY_DIR(v,Q) do{ Z_DIR_WRITE(v); Z2_DIR_WRITE((v) != INVERT_Z2_VS_Z_DIR); }while(0)
+  #define Z1_APPLY_DIR(v,Q) do{ Z_DIR_WRITE(v); }while(0)
+  #define Z2_APPLY_DIR(v,Q) do{ Z2_DIR_WRITE((v) != INVERT_Z2_VS_Z_DIR); }while(0)
   #if ENABLED(Z_DUAL_ENDSTOPS)
     #define Z_APPLY_STEP(v,Q) DUAL_ENDSTOP_APPLY_STEP(Z,v)
   #elif ENABLED(Z_STEPPER_AUTO_ALIGN)
     #define Z_APPLY_STEP(v,Q) DUAL_SEPARATE_APPLY_STEP(Z,v)
   #else
     #define Z_APPLY_STEP(v,Q) do{ Z_STEP_WRITE(v); Z2_STEP_WRITE(v); }while(0)
+    #define Z1_APPLY_STEP(v,Q) do{ Z_STEP_WRITE(v); }while(0)
+    #define Z2_APPLY_STEP(v,Q) do{ Z2_STEP_WRITE(v); }while(0)
   #endif
 #else
   #define Z_APPLY_DIR(v,Q) Z_DIR_WRITE(v)

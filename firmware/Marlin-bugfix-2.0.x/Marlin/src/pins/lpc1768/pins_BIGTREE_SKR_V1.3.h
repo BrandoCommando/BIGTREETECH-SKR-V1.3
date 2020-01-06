@@ -90,12 +90,22 @@
   #define E0_CS_PIN        P1_08
 #endif
 
+#define Y2_STEP_PIN P2_13
+#define Y2_DIR_PIN  P0_11
+#define Y2_ENABLE_PIN P2_12
+#define Y2_CS_PIN E0_CS_PIN
+
 #define E1_STEP_PIN        P0_01
 #define E1_DIR_PIN         P0_00
 #define E1_ENABLE_PIN      P0_10
 #ifndef E1_CS_PIN
   #define E1_CS_PIN        P1_01
 #endif
+
+#define Z2_STEP_PIN   P0_01
+#define Z2_DIR_PIN    P0_00
+#define Z2_ENABLE_PIN P0_10
+#define Z2_CS_PIN     E1_CS_PIN
 
 //
 // Software SPI pins for TMC2130 stepper drivers
@@ -119,12 +129,12 @@
    * Hardware serial communication ports.
    * If undefined software serial is used according to the pins below
    */
-  //#define X_HARDWARE_SERIAL  Serial
+  // #define X_HARDWARE_SERIAL  Serial
   //#define X2_HARDWARE_SERIAL Serial1
-  //#define Y_HARDWARE_SERIAL  Serial1
-  //#define Y2_HARDWARE_SERIAL Serial1
-  //#define Z_HARDWARE_SERIAL  Serial1
-  //#define Z2_HARDWARE_SERIAL Serial1
+  // #define Y_HARDWARE_SERIAL  Serial
+  // #define Y2_HARDWARE_SERIAL Serial
+  // #define Z_HARDWARE_SERIAL  Serial1
+  // #define Z2_HARDWARE_SERIAL Serial1
   //#define E0_HARDWARE_SERIAL Serial1
   //#define E1_HARDWARE_SERIAL Serial1
   //#define E2_HARDWARE_SERIAL Serial1
@@ -143,14 +153,25 @@
   #define Z_SERIAL_TX_PIN  P1_14
   #define Z_SERIAL_RX_PIN  P1_10
 
+#if AXIS_IS_TMC(Y2)
+  #define Y2_SERIAL_TX_PIN P1_09
+  #define Y2_SERIAL_RX_PIN P1_08
+  #define E0_SERIAL_TX_PIN -1
+  #define E0_SERIAL_RX_PIN -1
+#else
   #define E0_SERIAL_TX_PIN P1_09
   #define E0_SERIAL_RX_PIN P1_08
+#endif
 
-  #define E1_SERIAL_TX_PIN P1_04
-  #define E1_SERIAL_RX_PIN P1_01
-
+#if AXIS_IS_TMC(Z2)
   #define Z2_SERIAL_TX_PIN P1_04
   #define Z2_SERIAL_RX_PIN P1_01
+  #define E1_SERIAL_TX_PIN -1
+  #define E1_SERIAL_RX_PIN -1
+#else
+  #define E1_SERIAL_TX_PIN P1_04
+  #define E1_SERIAL_RX_PIN P1_01
+#endif
 
 #endif
 
@@ -261,7 +282,7 @@
 //
 
 #ifndef SDCARD_CONNECTION
-  #define SDCARD_CONNECTION LCD
+  #define SDCARD_CONNECTION ONBOARD
 #endif
 
 #define ONBOARD_SD_CS_PIN  P0_06   // Chip select for "System" SD card
