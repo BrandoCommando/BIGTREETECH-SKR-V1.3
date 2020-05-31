@@ -58,7 +58,7 @@
 // Filament Runout Sensor
 //
 #define FIL_RUNOUT_PIN     P1_26
-#define FIL_RUNOUT2_PIN    P1_25
+//#define FIL_RUNOUT2_PIN    P1_25
 
 //
 // Power Supply Control
@@ -112,6 +112,13 @@
   #define E1_CS_PIN        P1_01
 #endif
 
+#if ENABLED(Z_DUAL_STEPPER_DRIVERS)
+  #define Z2_STEP_PIN E1_STEP_PIN
+  #define Z2_DIR_PIN E1_DIR_PIN
+  #define Z2_ENABLE_PIN E1_ENABLE_PIN
+  #define Z2_CS_PIN E1_CS_PIN
+#endif
+
 #define TEMP_1_PIN         P0_23_A0   // A2 (T2) - (69) - TEMP_1_PIN
 #define TEMP_BED_PIN       P0_25_A2   // A0 (T0) - (67) - TEMP_BED_PIN
 
@@ -119,6 +126,13 @@
 // Include common SKR pins
 //
 #include "pins_BTT_SKR.h"
+
+#if ENABLED(LASER_FEATURE)
+  #define SPINDLE_LASER_ENA_PIN P1_24 // Neopixel
+  #define SPINDLE_LASER_READY_PIN P0_23
+  #undef TEMP_1_PIN
+  #define SPINDLE_LASER_VOLTAGE_PIN P0_24_A0
+#endif
 
 //
 // Software SPI pins for TMC2130 stepper drivers
@@ -144,7 +158,7 @@
    */
   //#define X_HARDWARE_SERIAL  Serial
   //#define X2_HARDWARE_SERIAL Serial1
-  //#define Y_HARDWARE_SERIAL  Serial1
+  //#define Y_HARDWARE_SERIAL  Serial
   //#define Y2_HARDWARE_SERIAL Serial1
   //#define Z_HARDWARE_SERIAL  Serial1
   //#define Z2_HARDWARE_SERIAL Serial1
@@ -174,6 +188,9 @@
 
   #define Z2_SERIAL_TX_PIN P1_01
   #define Z2_SERIAL_RX_PIN P1_01
+
+  #define Y2_SERIAL_TX_PIN P1_04
+  #define Y2_SERIAL_RX_PIN P1_04
 
   // Reduce baud rate to improve software serial reliability
   #define TMC_BAUD_RATE 19200
@@ -218,7 +235,9 @@
     #define LCD_PINS_D4    P1_20
 
     #define LCD_SDSS       P0_16   // (16) J3-7 & AUX-4
-    #define SD_DETECT_PIN  P1_31   // (49) (NOT 5V tolerant)
+    #ifndef SD_DETECT_PIN
+      #define SD_DETECT_PIN  P1_31   // (49) (NOT 5V tolerant)
+    #endif
 
     #if ENABLED(FYSETC_MINI_12864)
       #define DOGLCD_CS    P1_18

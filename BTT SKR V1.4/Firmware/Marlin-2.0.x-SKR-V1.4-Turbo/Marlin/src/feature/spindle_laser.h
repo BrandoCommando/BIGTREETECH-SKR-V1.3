@@ -75,6 +75,10 @@ public:
 
   // Wait for spindle to spin up or spin down
   static inline void power_delay() {
+    // #if ENABLED(SPINDLE_LASER_READY_PIN)
+    //   pinMode(SPINDLE_LASER_READY_PIN, INPUT);
+    //   const int target = enabled() == SPINDLE_LASER_READY_LOW : LOW : HIGH;
+    //   while (int(extDigitalRead(SPINDLE_LASER_READY_PIN)) != target) idle();
     #if SPINDLE_LASER_POWERUP_DELAY || SPINDLE_LASER_POWERDOWN_DELAY
       safe_delay(enabled() ? SPINDLE_LASER_POWERUP_DELAY : SPINDLE_LASER_POWERDOWN_DELAY);
     #endif
