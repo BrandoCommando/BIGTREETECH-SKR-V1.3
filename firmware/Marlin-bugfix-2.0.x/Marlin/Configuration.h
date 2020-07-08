@@ -36,7 +36,7 @@
  * Advanced settings can be found in Configuration_adv.h
  *
  */
-#define CONFIGURATION_H_VERSION 020000
+#define CONFIGURATION_H_VERSION 020001
 
 //===========================================================================
 //============================= Getting Started =============================
@@ -640,17 +640,17 @@
   //#define ENDSTOPPULLDOWN_XMIN
   #define ENDSTOPPULLDOWN_YMIN
   //#define ENDSTOPPULLDOWN_ZMIN
-  //#define ENDSTOPPULLDOWN_ZMIN_PROBE
+  #define ENDSTOPPULLDOWN_ZMIN_PROBE
 #endif
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
 #define X_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
 #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-#define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
 #define X_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false // Set to true to invert the logic of the probe.
+#define Z_MIN_ENDSTOP_INVERTING Z_MIN_PROBE_ENDSTOP_INVERTING // Set to true to invert the logic of the endstop.
 
 /**
  * Stepper Drivers
@@ -726,7 +726,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 80, 1600, 409 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 80, 394, 409 }
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -827,7 +827,9 @@
  *      - normally-open switches to 5V and D32.
  *
  */
-//#define Z_MIN_PROBE_PIN 32 // Pin 32 is the RAMPS default
+#ifndef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+#define Z_MIN_PROBE_PIN P1_24
+#endif
 
 /**
  * Probe Type
@@ -848,13 +850,13 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-#define FIX_MOUNTED_PROBE
+//#define FIX_MOUNTED_PROBE
 
 /**
  * Z Servo Probe, such as an endstop switch on a rotating arm.
  */
-//#define Z_PROBE_SERVO_NR 0       // Defaults to SERVO 0 connector.
-//#define Z_SERVO_ANGLES { 70, 0 } // Z Servo Deploy and Stow angles
+#define Z_PROBE_SERVO_NR 0       // Defaults to SERVO 0 connector.
+#define Z_SERVO_ANGLES { 20, 140 } // Z Servo Deploy and Stow angles
 
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
@@ -917,7 +919,7 @@
  */
 #define X_PROBE_OFFSET_FROM_EXTRUDER 0 //-38  // X offset: -left  +right  [of the nozzle]
 #define Y_PROBE_OFFSET_FROM_EXTRUDER 0 //-27  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.6   // Z offset: -below +above  [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.5   // Z offset: -below +above  [the nozzle]
 
 // Certain types of probes need to stay away from edges
 #define MIN_PROBE_EDGE 5
@@ -969,7 +971,7 @@
 #define Z_PROBE_OFFSET_RANGE_MAX 20
 
 // Enable the M48 repeatability test to test probe accuracy
-//#define Z_MIN_PROBE_REPEATABILITY_TEST
+#define Z_MIN_PROBE_REPEATABILITY_TEST
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -1338,7 +1340,7 @@
 #endif
 
 // Homing speeds (mm/m)
-#define HOMING_FEEDRATE_XY (30*60)
+#define HOMING_FEEDRATE_XY (20*60)
 #define HOMING_FEEDRATE_Z  (4*60)
 
 // Validate that endstops are triggered on homing moves
@@ -1446,7 +1448,7 @@
 //
 // M149 Set temperature units support
 //
-//#define TEMPERATURE_UNITS_SUPPORT
+#define TEMPERATURE_UNITS_SUPPORT
 
 // @section temperature
 
@@ -1472,11 +1474,11 @@
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-//#define NOZZLE_PARK_FEATURE
+#define NOZZLE_PARK_FEATURE
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
-  #define NOZZLE_PARK_POINT { (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
+  #define NOZZLE_PARK_POINT { (X_MAX_POS - 10), (Y_MIN_POS + 10), 10 }
   #define NOZZLE_PARK_XY_FEEDRATE 100   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
   #define NOZZLE_PARK_Z_FEEDRATE 5      // (mm/s) Z axis feedrate (not used for delta printers)
 #endif
@@ -1593,7 +1595,7 @@
  *
  * :{ 'en':'English', 'an':'Aragonese', 'bg':'Bulgarian', 'ca':'Catalan', 'cz':'Czech', 'da':'Danish', 'de':'German', 'el':'Greek', 'el-gr':'Greek (Greece)', 'es':'Spanish', 'eu':'Basque-Euskera', 'fi':'Finnish', 'fr':'French', 'gl':'Galician', 'hr':'Croatian', 'it':'Italian', 'jp-kana':'Japanese', 'ko_KR':'Korean (South Korea)', 'nl':'Dutch', 'pl':'Polish', 'pt':'Portuguese', 'pt-br':'Portuguese (Brazilian)', 'ru':'Russian', 'sk':'Slovak', 'tr':'Turkish', 'uk':'Ukrainian', 'vi':'Vietnamese', 'zh_CN':'Chinese (Simplified)', 'zh_TW':'Chinese (Traditional)', 'test':'TEST' }
  */
-#define LCD_LANGUAGE en
+//#define LCD_LANGUAGE en
 
 /**
  * LCD Character Set
@@ -1617,14 +1619,14 @@
  *
  * :['JAPANESE', 'WESTERN', 'CYRILLIC']
  */
-#define DISPLAY_CHARSET_HD44780 WESTERN
+//#define DISPLAY_CHARSET_HD44780 WESTERN
 
 /**
  * Info Screen Style (0:Classic, 1:Prusa)
  *
  * :[0:'Classic', 1:'Prusa']
  */
-#define LCD_INFO_SCREEN_STYLE 0
+//#define LCD_INFO_SCREEN_STYLE 0
 
 /**
  * SD CARD
@@ -1633,7 +1635,7 @@
  * you must uncomment the following option or it won't work.
  *
  */
-#define SDSUPPORT
+//#define SDSUPPORT
 
 /**
  * SD CARD: SPI SPEED
@@ -1721,7 +1723,7 @@
 // If you have a speaker that can produce tones, enable it here.
 // By default Marlin assumes you have a buzzer with a fixed frequency.
 //
-#define SPEAKER
+//#define SPEAKER
 
 //
 // The duration and frequency for the UI feedback sound.
@@ -2212,7 +2214,9 @@
  * Set this manually if there are extra servos needing manual control.
  * Leave undefined or set to 0 to entirely disable the servo subsystem.
  */
-//#define NUM_SERVOS 3 // Servo index starts with 0 for M280 command
+#ifdef Z_PROBE_SERVO_NR
+
+#define NUM_SERVOS 1 // Servo index starts with 0 for M280 command
 
 // Delay (in milliseconds) before the next move will start, to give the servo time to reach its target angle.
 // 300ms is a good value but you can try less delay.
@@ -2220,7 +2224,9 @@
 #define SERVO_DELAY { 300 }
 
 // Only power servos during movement, otherwise leave off to prevent jitter
-//#define DEACTIVATE_SERVOS_AFTER_MOVE
+#define DEACTIVATE_SERVOS_AFTER_MOVE
 
 // Allow servo angle to be edited and saved to EEPROM
-//#define EDITABLE_SERVO_ANGLES
+#define EDITABLE_SERVO_ANGLES
+
+#endif
