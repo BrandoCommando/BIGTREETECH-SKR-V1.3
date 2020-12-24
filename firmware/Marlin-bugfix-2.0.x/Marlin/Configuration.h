@@ -147,7 +147,7 @@
 
 // This defines the number of extruders
 // :[1, 2, 3, 4, 5, 6]
-#define EXTRUDERS 1
+#define EXTRUDERS 2
 
 // Generally expected filament diameter (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
 #define DEFAULT_NOMINAL_FILAMENT_DIA 1.75
@@ -312,9 +312,9 @@
 // Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
 // The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
 // For the other hotends it is their distance from the extruder 0 hotend.
-//#define HOTEND_OFFSET_X { 0.0, 20.00 } // (mm) relative X-offset for each nozzle
-//#define HOTEND_OFFSET_Y { 0.0, 5.00 }  // (mm) relative Y-offset for each nozzle
-//#define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
+#define HOTEND_OFFSET_X { 0.0, -2.00 } // (mm) relative X-offset for each nozzle
+#define HOTEND_OFFSET_Y { 0.0, -47.00 }  // (mm) relative Y-offset for each nozzle
+#define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
 
 // @section machine
 
@@ -408,7 +408,7 @@
  * :{ '0':"Not used", '1':"100k / 4.7k - EPCOS", '331':"(3.3V thermistor 1)", '2':"200k / 4.7k - ATC Semitec 204GT-2", '3':"Mendel-parts / 4.7k", '4':"10k !! do not use for a hotend. Bad resolution at high temp. !!", '5':"100K / 4.7k - ATC Semitec 104GT-2 (Used in ParCan & J-Head)", '501':"100K Zonestar (Tronxy X3A)", '512':"100k RPW-Ultra hotend thermistor", '6':"100k / 4.7k EPCOS - Not as accurate as Table 1", '7':"100k / 4.7k Honeywell 135-104LAG-J01", '8':"100k / 4.7k 0603 SMD Vishay NTCS0603E3104FXT", '9':"100k / 4.7k GE Sensing AL03006-58.2K-97-G1", '10':"100k / 4.7k RS 198-961", '11':"100k / 4.7k beta 3950 1%", '12':"100k / 4.7k 0603 SMD Vishay NTCS0603E3104FXT (calibrated for Makibox hot bed)", '13':"100k Hisens 3950  1% up to 300°C for hotend 'Simple ONE ' & hotend 'All In ONE'", '18':"ATC Semitec 204GT-2 (4.7k pullup) Dagoma.Fr - MKS_Base_DKU001327" '20':"Pt100 (Ultimainboard V2.x)", '201':"Pt100 (Overlord)", '51':"100k / 1k - EPCOS", '52':"200k / 1k - ATC Semitec 204GT-2", '55':"100k / 1k - ATC Semitec 104GT-2 (Used in ParCan & J-Head)", '60':"100k Maker's Tool Works Kapton Bed Thermistor beta=3950", '61':"100k Formbot / Vivedino 3950 350C thermistor 4.7k pullup", '66':"Dyze Design 4.7M High Temperature thermistor", '67':"Slice Engineering 450C High Temperature thermistor", '70':"the 100K thermistor found in the bq Hephestos 2", '71':"100k / 4.7k Honeywell 135-104LAF-J01", '147':"Pt100 / 4.7k", '1047':"Pt1000 / 4.7k", '110':"Pt100 / 1k (non-standard)", '1010':"Pt1000 / 1k (non standard)", '-4':"Thermocouple + AD8495", '-3':"Thermocouple + MAX31855 (only for sensor 0)", '-2':"Thermocouple + MAX6675 (only for sensor 0)", '-1':"Thermocouple + AD595", '998':"Dummy 1", '999':"Dummy 2", '1000':"Custom thermistor params" }
  */
 #define TEMP_SENSOR_0 1
-#define TEMP_SENSOR_1 0
+#define TEMP_SENSOR_1 1
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
 #define TEMP_SENSOR_4 0
@@ -447,7 +447,7 @@
 // This can protect components from overheating, but NOT from shorts and failures.
 // (Use MINTEMP for thermistor short/failure protection.)
 #define HEATER_0_MAXTEMP 275
-#define HEATER_1_MAXTEMP 275
+#define HEATER_1_MAXTEMP 310
 #define HEATER_2_MAXTEMP 275
 #define HEATER_3_MAXTEMP 275
 #define HEATER_4_MAXTEMP 275
@@ -675,13 +675,13 @@
 #define Z2_DRIVER_TYPE TMC2208
 //#define Z3_DRIVER_TYPE A4988
 #define E0_DRIVER_TYPE TMC2208
-//#define E1_DRIVER_TYPE A4988
+#define E1_DRIVER_TYPE TMC2208
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
 //#define E4_DRIVER_TYPE A4988
 //#define E5_DRIVER_TYPE A4988
 //#define Y_DUAL_STEPPER_DRIVERS
-#define Z_DUAL_STEPPER_DRIVERS
+//#define Z_DUAL_STEPPER_DRIVERS
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
@@ -719,21 +719,21 @@
  * following movement settings. If fewer factors are given than the
  * total number of extruders, the last value applies to the rest.
  */
-//#define DISTINCT_E_FACTORS
+#define DISTINCT_E_FACTORS
 
 /**
  * Default Axis Steps Per Unit (steps/mm)
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 80, 394, 409 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 80, 394, 409, 600 }
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 500, 500, 20, 25 }
+#define DEFAULT_MAX_FEEDRATE          { 500, 500, 20, 25, 25 }
 
 /**
  * Default Max Acceleration (change/s) change = mm/s
@@ -741,7 +741,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 500, 500, 100, 5000 }
+#define DEFAULT_MAX_ACCELERATION      { 500, 500, 100, 5000, 5000 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -917,8 +917,8 @@
  *     O-- FRONT --+
  *   (0,0)
  */
-#define X_PROBE_OFFSET_FROM_EXTRUDER -45 //-38  // X offset: -left  +right  [of the nozzle]
-#define Y_PROBE_OFFSET_FROM_EXTRUDER -37 //-27  // Y offset: -front +behind [the nozzle]
+#define X_PROBE_OFFSET_FROM_EXTRUDER 40 //-38  // X offset: -left  +right  [of the nozzle]
+#define Y_PROBE_OFFSET_FROM_EXTRUDER 28 //-27  // Y offset: -front +behind [the nozzle]
 #define Z_PROBE_OFFSET_FROM_EXTRUDER -0.5   // Z offset: -below +above  [the nozzle]
 
 // Certain types of probes need to stay away from edges
@@ -1005,7 +1005,7 @@
 // WARNING: When motors turn off there is a chance of losing position accuracy!
 #define DISABLE_X false
 #define DISABLE_Y false
-#define DISABLE_Z false
+#define DISABLE_Z true
 
 // Warn on display about possibly reduced accuracy
 #define DISABLE_REDUCED_ACCURACY_WARNING
@@ -1013,7 +1013,7 @@
 // @section extruder
 
 #define DISABLE_E true             // For all extruders
-//#define DISABLE_INACTIVE_EXTRUDER // Keep only the active extruder enabled
+#define DISABLE_INACTIVE_EXTRUDER // Keep only the active extruder enabled
 
 // @section machine
 
@@ -1160,9 +1160,9 @@
  *   leveling in steps so you can manually adjust the Z height at each grid-point.
  *   With an LCD controller the process is guided step-by-step.
  */
-//#define AUTO_BED_LEVELING_3POINT
+#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
-#define AUTO_BED_LEVELING_BILINEAR
+//#define AUTO_BED_LEVELING_BILINEAR
 //#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
 
@@ -1275,12 +1275,12 @@
  * Override if the automatically selected points are inadequate.
  */
 #if EITHER(AUTO_BED_LEVELING_3POINT, AUTO_BED_LEVELING_UBL)
-  #define PROBE_PT_1_X 42
-  #define PROBE_PT_1_Y 185
-  #define PROBE_PT_2_X 155
-  #define PROBE_PT_2_Y 160
+  #define PROBE_PT_1_X 40
+  #define PROBE_PT_1_Y 45
+  #define PROBE_PT_2_X 130
+  #define PROBE_PT_2_Y 100
   #define PROBE_PT_3_X 80
-  #define PROBE_PT_3_Y 40
+  #define PROBE_PT_3_Y 140
 #endif
 
 /**
@@ -1332,7 +1332,7 @@
 // - Move the Z probe (or nozzle) to a defined XY point before Z Homing when homing all axes (G28).
 // - Prevent Z homing when the Z probe is outside bed area.
 //
-#define Z_SAFE_HOMING
+//#define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
   #define Z_SAFE_HOMING_X_POINT ((X_BED_SIZE) / 2)    // X point for Z homing when homing all axes (G28).
